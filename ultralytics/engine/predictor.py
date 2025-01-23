@@ -33,7 +33,6 @@ import platform
 import re
 import threading
 from pathlib import Path
-import os
 
 import cv2
 import numpy as np
@@ -127,8 +126,7 @@ class BasePredictor:
             im = np.ascontiguousarray(im)  # contiguous
             im = torch.from_numpy(im)
 
-        if 'apex_0' not in os.listdir('/dev'):
-            im = im.to(self.device)
+        im = im.to(self.device)
         im = im.half() if self.model.fp16 else im.float()  # uint8 to fp16/32
         if not_tensor:
             im /= 255  # 0 - 255 to 0.0 - 1.0
